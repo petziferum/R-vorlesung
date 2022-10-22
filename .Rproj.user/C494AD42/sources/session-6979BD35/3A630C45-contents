@@ -60,6 +60,13 @@ Namen <- c("Sam", "Frank", "Anna")
 pf <- data.frame(row.names = Namen, Alter, Gewicht, Geschlecht)
 pf
 
+pf["Anna", "Alter"] <- NA
+mean(pf$Alter)
+mean(pf$Alter, na.rm=TRUE)
+
+is.data.frame(pf)
+is.na(pf$Alter)
+
 #2 -------------------
 print(is.data.frame(mtcars))
 
