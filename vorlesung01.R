@@ -61,6 +61,7 @@ pf <- data.frame(row.names = Namen, Alter, Gewicht, Geschlecht)
 pf
 
 pf["Anna", "Alter"] <- NA
+pf
 mean(pf$Alter)
 mean(pf$Alter, na.rm=TRUE)
 
@@ -69,6 +70,19 @@ is.na(pf$Alter)
 
 #2 -------------------
 print(is.data.frame(mtcars))
+
+#3 ----------------------------------
+
+mat <- matrix(c(1:25), byrow=F, nrow=5)
+mat
+class(mat)
+is.data.frame(mat)
+
+matdf <- as.data.frame(mat)
+class(matdf)
+matdf
+is.data.frame(matdf)
+
 
 #5------------------------------------
 cars <- as.data.frame(mtcars)
@@ -82,7 +96,65 @@ mean(cars$mpg)
 cylinder <- subset(cars, cyl == 6)
 cylinder
 
-#8 ---------------------------------
+#8 Wähle die Spalten am, gear, und carb --------------------
+
+cars_view <- c("am", "gear", "carb")
+cars[ , cars_view]
+cars[ , c("am", "gear", "carb")]
+head(cars[ , c("am","gear","carb")])
 
 
 #9 ---------------------------------
+#10 --------------------------------
+performance <- cars$hp/cars$wt #Enthält werte aus hp/wt
+performance
+
+cars <- cbind(cars, performance)
+cars
+
+#Verkürzte form:
+cars$performance <- cars$hp/cars$wt
+
+#12 --------------------------------
+#Werte in spalte performance werden auf 2 Stellen gerundet
+cars$performance <- round(cars$performance, 2)
+head(cars)
+
+#------------------------------------------------------------
+#13 Was ist der durchschnittliche mpg Wert für Autos mit mehr als 100 PS (en. hp) und einem wt-Wert über 2.5?
+#Filter: mit den Eckigen Klammern kann immer ein Filter auf ein Dataframe angewendet werden
+cars_ps <- cars[cars$hp > 100 & cars$wt > 2.5, ] #speichert alle Autos mit mehr als 100PS und wt-Wert über 2.5
+cars_ps
+mean(cars_ps[ , "mpg"]) #Zeige Durchschnittswert der Spalte mpg
+
+mean(cars[cars$hp > 100 & cars$wt > 2.5, "mpg"]) #verkürzte Form
+
+
+#15 Wie ist der mpg (Verbrauch) des Hornet Sportabout? 
+cars["Hornet Sportabout", "mpg"] 
+
+
+###############################################################################
+
+library(readxl)
+install.packages("dplyr")
+library(dplyr)
+df <- swiss
+df
+#filtern mit dpyr
+
+filter(df, Fertility >= 60 & Examination > 12)
+
+select(df, Fertility, Examination) #positive Auswahl
+head(select(df, -Fertility, -Examination)) #Spalten Ausschliesen
+
+#sortieren
+arrange(df, Fertility, Examination)
+arrange(df, desc(Fertility))
+help(arrange)
+
+#PIPE - Operator (shortcut: str + shift + m) ----------------------------------
+set.seed(123)
+df %>% filter(Fertility > 80) %>% sample_n(5) %>% arrange(-Examination)
+
+
